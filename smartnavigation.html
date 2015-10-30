@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="description" content="Materialize is a modern responsive CSS framework based on Material Design by Google. ">
+    <title>SMART Navigation - Materialize</title>
+    <!-- Favicons-->
+    <link rel="apple-touch-icon-precomposed" href="images/favicon/apple-touch-icon-152x152.png">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
+    <link rel="icon" href="images/favicon/favicon-32x32.png" sizes="32x32">
+    <!--  Android 5 Chrome Color-->
+    <meta name="theme-color" content="#EE6E73">
+    <!-- CSS-->
+    <link href="css/prism.css" rel="stylesheet">
+    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.min.js"></script> 
+    <link href="http://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="//cdn.transifex.com/live.js"></script>
+  </head>
+  <body>
+    <header>
+      
+    </header>
+    <main ng-app="smartTwo" ng-controller="workspacectrl"><div class="container">
+    <div class="row">
+    <!--    <form class="col s12" >
+      
+        <div class="input-field col s6">
+          <select ng-model="mainMenuAlignment" ng-change="shiftAlignments()" class="browser-default" style="width: 40%">
+            <option ng-repeat="mode in modesOfWorkspaceView">{{mode}}</option>
+          </select>
+         
+        </div>
+      </form> -->
+    </div>
+  <div class="row">
+      
+        <div id="smartNavMainMenu" style="position: relative; height: 350px; width: 400px;">
+          <div class="fixed-action-smart-nav-btn  horizontal {{mainMenuAlignment}} click-to-toggle" style="position: absolute;">
+            <a class="smart-nav-btn-floating red waves-effect waves-light" style="margin-top: 15px;">
+              <i class="large material-icons">add</i>
+            </a>
+            <ul>
+              <li ng-repeat="eachSmartNav in workspaceTabs" ng-click="mainNavClickListener($index)"><a class="smart-nav-btn-floating waves-effect waves-light {{eachSmartNav.color}}"><i>{{eachSmartNav.deSelectedTitle}}</i></a></li>
+            </ul>
+          </div>
+        </div>
+
+    <div id="floatingSubmenu" style="position: relative; display: none">
+         <div class="fixed-action-smart-nav-btn vertical {{subMenuAlignment}} click-to-toggle" style="position: absolute;">
+                 <a class="smart-nav-btn-floating" style="opacity:0"> </a>
+               <ul>
+               <li ng-repeat="eachSubTab in subMenuTabs"><a class="smart-nav-btn-floating submenu-li waves-effect {{parentColor}}"><i>{{eachSubTab}}</i></a></li>
+              </ul>
+            </a>
+     </div> 
+   </div>
+   </div>
+   </main>
+    <!--  Scripts-->
+    <script src="js/jquery.min.js"></script>
+    <script>if (!window.jQuery) { document.write('<script src="bin/jquery-2.1.1.min.js"><\/script>'); }
+    </script>
+    <script src="js/jquery.timeago.min.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="jade/lunr.min.js"></script>
+    <script src="jade/search.js"></script>
+    <script src="bin/materialize.js"></script>
+    <script src="js/init.js"></script>
+
+    <!--  SMART WORKSPACE  -->
+    <script>
+      (function ($) {
+        $(window).load(function() {
+
+          // jQuery reverse
+          $.fn.reverse = [].reverse;
+
+          // Hover behaviour: make sure this doesn't work on .click-to-toggle FABs!
+          $(document).on('mouseenter.fixedActionSmartNavBtn', '.fixed-action-smart-nav-btn:not(.click-to-toggle)', function(e) {
+            var $this = $(this);
+            openFABMenu($this);
+          });
+          $(document).on('mouseleave.fixedActionSmartNavBtn','.fixed-action-smart-nav-btn:not(.click-to-toggle)', function(e) {
+            var $this = $(this);
+            closeFABMenu($this);
+          });
+
+          // Toggle-on-click behaviour.
+          $(document).on('click.fixedActionSmartNavBtn', '.fixed-action-smart-nav-btn.click-to-toggle > a', function(e) {
+            var $this = $(this);
+            var $menu = $this.parent();
+            if ($menu.hasClass('selectionActive')) {
+            // if (false) {
+              closeFABMenu($menu);
+              closeSubmenu($menu);
+            } else {
+              openFABMenu($menu);
+            }
+          });
+
+          function openSubmenu($menu){
+              $menu.addClass('subMenuActive');
+              activeChildMenuIndex = $menu.index();
+              $('#floatingSubmenu').css('display', 'block');
+              var xMovement = 0, yMovement = 0;
+              if(isMainNavHorizontal){
+                xMovement = mainMenuContainerWidth-mainLiIndices[$menu.index()]*distanceConstant; // + paddingAdjustment * 3/5;
+              }
+              else{
+                xMovement = mainMenuContainerWidth;
+                yMovement = 300-mainLiIndices[$menu.index()]*distanceConstant; // + paddingAdjustment * 3/5;
+              }
+              moveSubmenu(xMovement, yMovement);
+          }
+
+          function closeSubmenu($menu){
+               $('#floatingSubmenu').css('display','none');
+               moveSubmenu(-200,-200);
+               
+               if(activeChildMenuIndex != -1)
+                  $($menu.parent().children()[activeChildMenuIndex]).removeClass('subMenuActive');
+               else
+                  $menu.removeClass('subMenuActive');
+
+                activeChildMenuIndex = -1;
+          }
+
+          $(document).on('click','ul .smart-nav-btn-floating', function(e) {
+            var $this = $(this);
+            var $menu = $this.parent();
+            closeSubmenu($menu);
+
+            if (!($menu.hasClass('subMenuActive'))) {
+               openSubmenu($menu);
+            }
+       
+            // Pass click from selected element to sub menu
+            $($(".fixed-action-smart-nav-btn.click-to-toggle > a")[1]).trigger('click');
+             
+          });
+
+          function moveSubmenu(leftArg, topArg){
+              // Reposition Submenu
+              $('#floatingSubmenu').css({
+                  position: 'absolute',
+                  width: leftArg +'px',
+                  // left: leftArg +'px',
+                  height: topArg+'px'
+                  // top: topArg+'px'
+              });
+          }
+
+          calculatedistanceConstant();
+
+        });
+
+       
+
+        var newIndexValArr = [];
+
+        $.fn.extend({
+          openFAB: function() {
+            var $this = $(this);
+            openFABMenu($this);
+          },
+          closeFAB: function() {
+            closeFABMenu($this);
+          }
+        });
+
+        var returnDimensions = {
+            "mainBtnDimensions": "",
+            "subordinateBtnDimensions" : ""
+        };
+
+        var distanceConstant  = 0, separatorConstant = 0, diameter = 0;
+        var paddingAdjustment = 7;  // For centering of radius based on different radius values
+        var mainMenuContainerWidth = 300;
+
+        // Calculate the separator value which should be set for the main (central) button 
+        // General assumption is Main & Sub child li elements are of same Size/Diameter
+        var calculatedistanceConstant = function(){
+            
+            var listArr = $('.fixed-action-smart-nav-btn').find('ul .smart-nav-btn-floating:not(.submenu-li)');
+
+            isMainNavHorizontal = listArr.parent().parent().parent().hasClass("horizontal");
+            var coordinateArrs = [], variantKey;
+            var elem1Offset = $(listArr[0]).offset();
+            var elem2Offset = $(listArr[1]).offset();
+            if(elem1Offset.top == elem2Offset.top){
+              variantKey = "left";    // Horizontal
+              returnDimensions.mainBtnDimensions = $(listArr[0]).width();
+            }
+            else{
+              variantKey = "top";     // Verticle
+              returnDimensions.mainBtnDimensions = $(listArr[0]).height();
+            }
+            var diffVal = 99999;
+            // Check for the first 3 li elements
+            for(var j=0;j<2 && listArr.length > 2;j++){
+                // Determine horizontal or vertical positioning
+                if(Math.abs($(listArr[j]).offset()[variantKey]-$(listArr[j+1]).offset()[variantKey]) < diffVal)
+                    diffVal = Math.abs($(listArr[j]).offset()[variantKey]-$(listArr[j+1]).offset()[variantKey]);
+            }
+            distanceConstant = diffVal; // + paddingAdjustment;
+            diameter = returnDimensions.mainBtnDimensions;
+            separatorConstant = distanceConstant - diameter;
+            generateLinearConvertorArray(listArr.length);
+
+            mainMenuContainerWidth = $("#smartNavMainMenu").width();
+            console.log(distanceConstant, diameter);
+        };
+
+        // Change this function values to change direction of transitions
+        var setInitialOffsets = function(newElemIndex, totalElems){
+
+          var indexSpecificVals = [];
+          if(newElemIndex > 0)
+            indexSpecificVals.push(1400);
+          else
+            indexSpecificVals.push(-200);
+
+          return indexSpecificVals;
+        };
+
+        var mainLiIndices = [];
+        var activeChildMenuIndex = -1, isMainNavHorizontal;
+
+        function generateLinearConvertorArray(total){
+          for(var w=0;w<total;w++){
+            mainLiIndices.push(linearConvertor(w,total));
+          }
+          console.log(mainLiIndices);
+          return mainLiIndices;
+        }
+
+        function linearConvertor(elemIndex, total){
+            
+          var returnIndex; 
+            var adjustmentVal = (total%2==0)?1:0;
+            if((total - elemIndex) >= total/2)
+              returnIndex = total/2 - elemIndex + adjustmentVal;
+            if((total - elemIndex) < total/2)
+              returnIndex = (total/2 - elemIndex);
+
+            var retIndex;
+            
+            if(returnIndex > 0)
+               retIndex = Math.ceil(returnIndex);
+            else
+               retIndex = Math.floor(returnIndex);
+            
+            return retIndex;
+        }
+
+        var generatorConst = 115;
+        // Calculations to determine final position of each child element
+        function distanceSetter(setIndex, childItemsLength, isHorizontal, idealSpacing){
+          var newDistance; 
+          var baseXConstant = distanceConstant;  // Spacing between main button & child buttons
+
+          var setMultiplier = newIndexValArr
+
+          if(childItemsLength > 0 && childItemsLength!==1 && childItemsLength%2==1)
+            childItemsLength = childItemsLength-1;
+
+          if(setIndex < 0){
+            newDistance = 2 * diameter + generatorConst + (childItemsLength - 6)*baseXConstant/2 - paddingAdjustment; // Math.abs(lowerLimit) * distanceConstant;  // - returnDimensions.mainBtnDimensions/2 ;
+          }
+          else{
+            newDistance = 2 * diameter + generatorConst + (childItemsLength - 6)*baseXConstant/2 + distanceConstant - paddingAdjustment; // diameter + Math.abs(upperLimit) * distanceConstant;  // - returnDimensions.mainBtnDimensions/2;
+          }
+            
+           return newDistance;
+        }
+
+        // timeMultiplier = 60ms
+        var setScaleAndDirectionGenerator = function(index, totalElems, isHorizontal, timeMultiplier){
+            var indexSpecificVals = [];
+            if(!timeMultiplier)
+              timeMultiplier = 25;
+            var newElemIndex = newIndexValArr[index];
+
+            indexSpecificVals.push(distanceSetter(newElemIndex, totalElems, isHorizontal));
+            indexSpecificVals.push(timeMultiplier * Math.abs(newElemIndex));
+            return indexSpecificVals;
+        };
+
+        var lowerLimit, upperLimit;
+
+        var openFABMenu = function (btn) {
+          $this = btn;
+          if ($this.hasClass('selectionActive') === false) {
+
+            // Get direction option
+            var horizontal = $this.hasClass('horizontal');
+            var offsetY, offsetX, scaleOffSetX, scaleOffSetY;
+
+            $this.addClass('selectionActive');
+            // $this.find('ul .smart-nav-btn-floating').velocity(
+            //   { scaleY: ".4", scaleX: ".4", translateY: offsetY + 'px', translateX: offsetX + 'px'},
+            //   { duration: 0 });
+           
+            var renderedElems = $this.find('ul .smart-nav-btn-floating');
+            newIndexValArr = [];
+            renderedElems.each( function (elemIndex) {
+                newIndexValArr.push(linearConvertor(elemIndex + 1, renderedElems.length));
+            });
+            lowerLimit = newIndexValArr[0];
+            upperLimit = newIndexValArr[renderedElems.length-1];
+            $this.find('ul .smart-nav-btn-floating').each( function (elemIndex) {
+              var scaleToSet = setInitialOffsets(newIndexValArr[elemIndex], renderedElems.length);
+              if (horizontal === true) {
+                if(!isMainNavHorizontal)
+                  offsetY = -715;
+                else
+                  offsetY = 0;
+                offsetX = scaleToSet[0];
+              }
+              else{
+                offsetY = scaleToSet[0];
+                offsetX = 0;
+                // if(!isMainNavHorizontal)
+                //   offsetX = 0;
+                // else
+                //   offsetX = mainMenuContainerWidth;
+              }
+              $(this).velocity(
+                { scaleX: ".07", scaleY: ".07", translateY: offsetY + 'px', translateX: offsetX + 'px'},
+                { duration: 0});
+             
+            });
+
+            var time = 0;
+            var foundElems = $this.find('ul .smart-nav-btn-floating').reverse();
+            foundElems.each( function (elemIndex) {
+              // var scaleToSet = setScaleAndDirection(elemIndex);
+             
+              var scaleToSet = setScaleAndDirectionGenerator(elemIndex, foundElems.length, horizontal); 
+
+               if (horizontal === true) {
+                if(!isMainNavHorizontal)
+                  scaleOffSetY = -315;
+                else
+                  scaleOffSetY = 0;
+                scaleOffSetX = changeOffsetForIE(scaleToSet[0]);
+              }
+              else{
+                scaleOffSetY = scaleToSet[0];
+                scaleOffSetX = 0;
+                // if(!isMainNavHorizontal)
+                //   scaleOffSetX = 0;
+                // else
+                //   scaleOffSetX = mainMenuContainerWidth;
+              }
+              $(this).velocity(
+                { opacity: "1", scaleX: "1", scaleY: "1", translateY: scaleOffSetY, translateX: scaleOffSetX},
+                { duration: 80, delay: scaleToSet[1] });
+              time += 100;
+
+               // console.log("For Element Index ",$(foundElems[elemIndex]), newIndexValArr[elemIndex]);
+            });
+          }
+        };
+
+         var closeFABMenu = function (btn) {
+          $this = btn;
+          // Get direction option
+          var horizontal = $this.hasClass('horizontal');
+          var offsetY, offsetX;
+
+          $this.removeClass('selectionActive');
+          var time = 0;
+          
+          var renderedElems = $this.find('ul .smart-nav-btn-floating');
+          renderedElems.velocity("stop", true);
+          newIndexValArr = [];
+          renderedElems.each( function (elemIndex) {
+              newIndexValArr.push(linearConvertor(elemIndex + 1, renderedElems.length));
+          });
+ 
+          // $this.find('ul .smart-nav-btn-floating').velocity(
+          //   { opacity: "0", scaleX: ".4", scaleY: ".4", translateY: offsetY + 'px', translateX: offsetX + 'px'},
+          //   { duration: 80 }
+          // );
+          
+           $this.find('ul .smart-nav-btn-floating').each( function (elemIndex) {
+              var scaleToSet = setInitialOffsets(newIndexValArr[elemIndex], renderedElems.length);
+              if (horizontal === true) {
+                offsetY = 0;
+                offsetX = scaleToSet[0];
+              }
+              else{
+                offsetY = scaleToSet[0];
+                offsetX = 0;
+              }
+              $(this).velocity(
+                { opacity: "0", scaleX: ".07", scaleY: ".07", translateY: offsetY + 'px', translateX: offsetX + 'px'},
+                { duration: 80});
+             
+            });
+        };
+
+        /*  Browser specific adjustment code  */
+        function isIE(userAgent) {
+          userAgent = userAgent || navigator.userAgent;
+          return userAgent.indexOf("MSIE ") > -1 || userAgent.indexOf("Trident/") > -1;
+        }
+        var isIEVar = isIE(); 
+        function changeOffsetForIE(calculatedOffset){
+            var iePadding = 15;
+            if(isIEVar)
+              calculatedOffset = calculatedOffset - $(".fixed-action-smart-nav-btn.horizontal > ul").width() - iePadding;
+            return calculatedOffset;
+        }
+        
+
+      }( jQuery ));
+  
+      var app= angular.module('smartTwo',[]);
+
+      app.controller('workspacectrl',function($scope){
+          /*
+          var eachTabSample = {
+             "deSelectedTitle" : "",
+             "selectedTitle" : "",
+             "subMenuContents" : [],
+             "color" : "",
+
+          };
+          */
+          $scope.workspaceTabs = [{"deSelectedTitle":"Home","color":"yellow","subMenuContents":["One","Two","Three"]},{"deSelectedTitle":"Procurement","color":"teal","subMenuContents":["Catalogs","Requisitions","Orders","Receipts","Invoices","IR","Return Note","Credit Memo","Programs"]},{"deSelectedTitle":"Sourcing","color":"orange","subMenuContents":["RFx","Auctions","Contracts","Forms","Scorecards","Action Plan"]},{"deSelectedTitle":"Projects","color":"brown","subMenuContents":["One","Two","Three"]},{"deSelectedTitle":"Spend","color":"blue","subMenuContents":["Dashboard","Reports","OpportunityFinder","DataExport","Feedback"]},{"deSelectedTitle":"Dashboards","color":"grey","subMenuContents":["KPI","Compliance","Projects","Sourcing","Contract","Procurement","CPODashboard","Partner360","Reports"]},{"deSelectedTitle":"Partners","color":"green","subMenuContents":["One","Two","Three"]}];
+
+          $scope.subMenuTabs = [];
+          $scope.parentColor = "green";
+          $scope.mainNavClickListener = function(clickIndex){
+              $scope.subMenuTabs = $scope.workspaceTabs[clickIndex].subMenuContents;
+              $scope.parentColor = $scope.workspaceTabs[clickIndex].color;
+          };
+          // $scope.modesOfWorkspaceView = ["horizontal", "vertical"];
+
+
+          // $scope.shiftAlignments = function(){
+
+          //   var tempAlignArr = angular.copy($scope.modesOfWorkspaceView);
+          //   tempAlignArr.splice(tempAlignArr.indexOf($scope.mainMenuAlignment ), 1 )
+          //   $scope.subMenuAlignment = tempAlignArr[0];
+          //   // location.reload();
+          // }
+
+          // $scope.mainMenuAlignment = "horizontal";
+          // $scope.subMenuAlignment = "vertical";
+      });
+
+    </script>
+  </body>
+</html>

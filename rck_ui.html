@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="description" content="Materialize is a modern responsive CSS framework based on Material Design by Google. ">
+    <title>Buttons - Materialize</title>
+    <!-- Favicons-->
+    <link rel="apple-touch-icon-precomposed" href="images/favicon/apple-touch-icon-152x152.png">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
+    <link rel="icon" href="images/favicon/favicon-32x32.png" sizes="32x32">
+    <!--  Android 5 Chrome Color-->
+    <meta name="theme-color" content="#EE6E73">
+    <!-- CSS-->
+    <link href="css/prism.css" rel="stylesheet">
+    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="http://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+      window.liveSettings = {
+        api_key: "a0b49b34b93844c38eaee15690d86413",
+        picker: "bottom-right",
+        detectlang: true,
+        dynamic: true,
+        autocollect: true
+      };
+    </script>
+    <script src="//cdn.transifex.com/live.js"></script>
+  </head>
+  <body>
+    <header>
+     <!--  <nav class="top-nav">
+        <div class="container">
+          <div class="nav-wrapper"><a class="page-title">Buttons</a></div>
+        </div>
+      </nav> -->
+      <div class="container"><a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only"><i class="mdi-navigation-menu"></i></a></div>
+      <ul id="nav-mobile" class="side-nav fixed">
+        <li class="logo"><a id="logo-container" href="http://materializecss.com/" class="brand-logo">
+            <object id="front-page-logo" type="image/svg+xml" data="res/materialize.svg">Your browser does not support SVG</object></a></li>
+        <li class="search">
+          <div class="search-wrapper card">
+            <input id="search"><i class="material-icons">search</i>
+            <div class="search-results"></div>
+          </div>
+        </li>
+        <li class="bold"><a href="about.html" class="waves-effect waves-teal">About</a></li>
+        <li class="bold"><a href="getting-started.html" class="waves-effect waves-teal">Getting Started</a></li>
+        <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+            <li class="bold"><a class="collapsible-header  waves-effect waves-teal">CSS</a>
+              <div class="collapsible-body">
+                <ul>
+                  <li><a href="color.html">Color</a></li>
+                  <li><a href="grid.html">Grid</a></li>
+                  <li><a href="helpers.html">Helpers</a></li>
+                  <li><a href="media-css.html">Media</a></li>
+                  <li><a href="sass.html">Sass</a></li>
+                  <li><a href="shadow.html">Shadow</a></li>
+                  <li><a href="table.html">Table</a></li>
+                  <li><a href="typography.html">Typography</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="bold"><a class="collapsible-header active waves-effect waves-teal">Components</a>
+              <div class="collapsible-body">
+                <ul>
+                  <li><a href="badges.html">Badges</a></li>
+                  <li class="active"><a href="buttons.html">Buttons</a></li>
+                  <li><a href="cards.html">Cards</a></li>
+                  <li><a href="chips.html">Chips</a></li>
+                  <li><a href="collections.html">Collections</a></li>
+                  <li><a href="footer.html">Footer</a></li>
+                  <li><a href="forms.html">Forms</a></li>
+                  <li><a href="icons.html">Icons</a></li>
+                  <li><a href="navbar.html">Navbar</a></li>
+                  <li><a href="pagination.html">Pagination</a></li>
+                  <li><a href="preloader.html">Preloader</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="bold"><a class="collapsible-header  waves-effect waves-teal">JavaScript</a>
+              <div class="collapsible-body">
+                <ul>
+                  <li><a href="collapsible.html">Collapsible</a></li>
+                  <li><a href="dialogs.html">Dialogs</a></li>
+                  <li><a href="dropdown.html">Dropdown</a></li>
+                  <li><a href="media.html">Media</a></li>
+                  <li><a href="modals.html">Modals</a></li>
+                  <li><a href="parallax.html">Parallax</a></li>
+                  <li><a href="pushpin.html">Pushpin</a></li>
+                  <li><a href="scrollfire.html">ScrollFire</a></li>
+                  <li><a href="scrollspy.html">Scrollspy</a></li>
+                  <li><a href="side-nav.html">SideNav</a></li>
+                  <li><a href="tabs.html">Tabs</a></li>
+                  <li><a href="transitions.html">Transitions</a></li>
+                  <li><a href="waves.html">Waves</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li class="bold"><a href="http://materializecss.com/mobile.html" class="waves-effect waves-teal">Mobile</a></li>
+        <li class="bold"><a href="showcase.html" class="waves-effect waves-teal">Showcase</a></li>
+      </ul>
+    </header>
+    <main><div class="container">
+  <div class="row">
+  
+        <h4 class="light">Click-only FAB</h4>
+        <p>If you want to disable the hover behaviour, and instead toggle the FAB menu when the user clicks on the large button (works great on mobile!), just add the <code class="language-markup">click-to-toggle</code> class to the FAB.</p>
+        <div style="position: relative; height: 70px; width: 550px;">
+          <div class="fixed-action-btn horizontal click-to-toggle" style="position: absolute;">
+            <a class="btn-floating btn-large red">
+              <i class="large mdi-navigation-menu"></i>
+            </a>
+            <ul>
+              <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+              <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+              <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+              <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+              <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+              <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+              <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+              <!-- <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li> -->
+            </ul>
+          </div>
+        </div>
+
+   <div id="floatingSubmenu" style="position: relative; height: 200px; width: 0px;">
+         <div class="fixed-action-btn verticle click-to-toggle" style="position: absolute;">
+                 <a class="btn-floating btn-large red">
+              <i class="large mdi-navigation-menu"></i>
+              </a>
+               <ul>
+               <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+              <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+              <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+              </ul>
+            </a>
+     </div>
+   </div>
+   </div>
+   </main>
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>if (!window.jQuery) { document.write('<script src="bin/jquery-2.1.1.min.js"><\/script>'); }
+    </script>
+    <script src="js/jquery.timeago.min.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="jade/lunr.min.js"></script>
+    <script src="jade/search.js"></script>
+    <script src="bin/materialize.js"></script>
+    <script src="js/init.js"></script>
+    <!-- Twitter Button -->
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+    <!-- Google Plus Button-->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!--  SMART WORKSPACE  -->
+    <script>
+      (function ($) {
+        $(document).ready(function() {
+
+          // jQuery reverse
+          $.fn.reverse = [].reverse;
+
+          // Hover behaviour: make sure this doesn't work on .click-to-toggle FABs!
+          $(document).on('mouseenter.fixedActionBtn', '.fixed-action-btn:not(.click-to-toggle)', function(e) {
+            var $this = $(this);
+            openFABMenu($this);
+          });
+          $(document).on('mouseleave.fixedActionBtn', '.fixed-action-btn:not(.click-to-toggle)', function(e) {
+            var $this = $(this);
+            closeFABMenu($this);
+          });
+
+          // Toggle-on-click behaviour.
+          $(document).on('click.fixedActionBtn', '.fixed-action-btn.click-to-toggle > a', function(e) {
+            var $this = $(this);
+            moveSubmenu(e.currentTarget.getBoundingClientRect().left, e.currentTarget.getBoundingClientRect().top);
+            var $menu = $this.parent();
+            if ($menu.hasClass('selectionActive')) {
+            // if (false) {
+              closeFABMenu($menu);
+            } else {
+
+              openFABMenu($menu);
+            }
+          });
+
+        });
+
+        function moveSubmenu(leftArg, topArg){
+            $('#floatingSubmenu').css({
+                position: 'absolute',
+                left: leftArg +'px',
+                top: topArg+'px'
+            });
+        }
+
+        var newIndexValArr = [];
+
+        $.fn.extend({
+          openFAB: function() {
+            var $this = $(this);
+            openFABMenu($this);
+          },
+          closeFAB: function() {
+            closeFABMenu($this);
+          }
+        });
+
+        // Change this function values to change direction of transitions
+        var setInitialOffsets = function(newElemIndex, totalElems){
+
+          var indexSpecificVals = [];
+          if(newElemIndex > 0)
+            indexSpecificVals.push(500);
+          else
+            indexSpecificVals.push(-100);
+
+          return indexSpecificVals;
+        };
+
+
+        function linearConvertor(elemIndex, total){
+            
+          var returnIndex; 
+            var adjustmentVal = (total%2==0)?1:0;
+            if((total - elemIndex) >= total/2)
+              returnIndex = total/2 - elemIndex + adjustmentVal;
+            if((total - elemIndex) < total/2)
+              returnIndex = (total/2 - elemIndex);
+
+            var retIndex;
+            
+            if(returnIndex > 0)
+               retIndex = Math.ceil(returnIndex);
+            else
+               retIndex = Math.floor(returnIndex);
+            
+            return retIndex;
+        }
+
+        // Calculations to determine final position of each child element
+        function distanceSetter(setIndex, childItemsLength, isHorizontal, idealSpacing){
+          var newDistance; 
+          var baseXConstant = 80;  // Spacing between main button & child buttons
+
+          if(!idealSpacing){
+            if(isHorizontal)
+              idealSpacing = 28
+            // Adjustment for alignment of child elements in Vertical positioning
+            else
+              idealSpacing = 27;
+          }
+
+          if(childItemsLength > 0 && childItemsLength!==1 && childItemsLength%2==1)
+            childItemsLength = childItemsLength-1;
+
+          if(setIndex < 0)
+            newDistance = idealSpacing * childItemsLength;
+          else
+            newDistance = baseXConstant + idealSpacing * childItemsLength;
+
+           return newDistance;
+        }
+
+        // timeMultiplier = 60ms
+        var setScaleAndDirectionGenerator = function(index, totalElems, isHorizontal, timeMultiplier){
+            var indexSpecificVals = [];
+            if(!timeMultiplier)
+              timeMultiplier = 50;
+            var newElemIndex = newIndexValArr[index];
+            indexSpecificVals.push(distanceSetter(newElemIndex, totalElems, isHorizontal));
+            indexSpecificVals.push(timeMultiplier * Math.abs(newElemIndex));
+            return indexSpecificVals;
+        };
+
+        var returnDimensions = {
+            "mainBtnDimensions": "",
+            "subordinateBtnDimensions" : ""
+        };
+
+        var getRenderedElementDimensions = function(thisElem, isHorizontal, isMainBtn){
+            var mainBtnDimensions, subordinateBtnDimensions;
+           
+            var elemPixels, spacerDistance;
+            if(isHorizontal)
+              elemPixels = $(thisElem).width();
+            else
+              elemPixels = $(thisElem).height();
+
+            if(isMainBtn)
+              returnDimensions.mainBtnDimensions = elemPixels;
+            else
+              returnDimensions.subordinateBtnDimensions = elemPixels;
+        };
+
+        var openFABMenu = function (btn) {
+          $this = btn;
+          if ($this.hasClass('selectionActive') === false) {
+
+            // Get direction option
+            var horizontal = $this.hasClass('horizontal');
+            var offsetY, offsetX, scaleOffSetX, scaleOffSetY;
+
+            $this.addClass('selectionActive');
+            // $this.find('ul .btn-floating').velocity(
+            //   { scaleY: ".4", scaleX: ".4", translateY: offsetY + 'px', translateX: offsetX + 'px'},
+            //   { duration: 0 });
+           
+            var renderedElems = $this.find('ul .btn-floating');
+            newIndexValArr = [];
+            renderedElems.each( function (elemIndex) {
+                newIndexValArr.push(linearConvertor(elemIndex + 1, renderedElems.length));
+            });
+
+            $this.find('ul .btn-floating').each( function (elemIndex) {
+              var scaleToSet = setInitialOffsets(newIndexValArr[elemIndex], renderedElems.length);
+              if (horizontal === true) {
+                offsetY = 0;
+                offsetX = scaleToSet[0];
+              }
+              else{
+                offsetY = scaleToSet[0];
+                offsetX = 0;
+              }
+              $(this).velocity(
+                { scaleX: ".4", scaleY: ".4", translateY: offsetY + 'px', translateX: offsetX + 'px'},
+                { duration: 0});
+             
+            });
+
+            var time = 0;
+            var foundElems = $this.find('ul .btn-floating').reverse();
+            foundElems.each( function (elemIndex) {
+              // var scaleToSet = setScaleAndDirection(elemIndex);
+              var scaleToSet = setScaleAndDirectionGenerator(elemIndex, foundElems.length, horizontal); 
+              
+               if (horizontal === true) {
+                scaleOffSetY = "0";
+                scaleOffSetX = scaleToSet[0];
+              }
+              else{
+                scaleOffSetY = scaleToSet[0];
+                scaleOffSetX = "0";        
+              }
+              $(this).velocity(
+                { opacity: "1", scaleX: "1", scaleY: "1", translateY: scaleOffSetY, translateX: scaleOffSetX},
+                { duration: 80, delay: scaleToSet[1] });
+              time += 100;
+            });
+          }
+        };
+
+         var closeFABMenu = function (btn) {
+          $this = btn;
+          // Get direction option
+          var horizontal = $this.hasClass('horizontal');
+          var offsetY, offsetX;
+
+          $this.removeClass('selectionActive');
+          var time = 0;
+          
+          var renderedElems = $this.find('ul .btn-floating');
+          renderedElems.velocity("stop", true);
+          newIndexValArr = [];
+          renderedElems.each( function (elemIndex) {
+              newIndexValArr.push(linearConvertor(elemIndex + 1, renderedElems.length));
+          });
+          
+          // $this.find('ul .btn-floating').velocity(
+          //   { opacity: "0", scaleX: ".4", scaleY: ".4", translateY: offsetY + 'px', translateX: offsetX + 'px'},
+          //   { duration: 80 }
+          // );
+          
+           $this.find('ul .btn-floating').each( function (elemIndex) {
+              var scaleToSet = setInitialOffsets(newIndexValArr[elemIndex], renderedElems.length);
+              if (horizontal === true) {
+                offsetY = 0;
+                offsetX = scaleToSet[0];
+              }
+              else{
+                offsetY = scaleToSet[0];
+                offsetX = 0;
+              }
+              $(this).velocity(
+                { opacity: "0", scaleX: ".2", scaleY: ".2", translateY: offsetY + 'px', translateX: offsetX + 'px'},
+                { duration: 80});
+             
+            });
+        };
+
+
+      }( jQuery ));
+
+    </script>
+  </body>
+</html>
